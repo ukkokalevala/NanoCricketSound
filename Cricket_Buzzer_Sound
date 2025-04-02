@@ -1,0 +1,30 @@
+const int buttonPin = 4;     // Button on D2 (to GND)
+const int buzzerPin = 8;     // Passive buzzer on D8
+const int ampPin = 9;        // Optional transistor amplifier control
+
+void setup() {
+  pinMode(buttonPin, INPUT_PULLUP);
+  pinMode(buzzerPin, OUTPUT);
+  pinMode(ampPin, OUTPUT);
+  digitalWrite(ampPin, HIGH);  // Activate amplifier if used
+}
+
+void loop() {
+  if (digitalRead(buttonPin) == LOW) {
+    playCricketSound();
+    delay(300);  // Debounce
+  }
+}
+
+void playCricketSound() {
+  // Triple chirp with varying frequencies for realism
+  for (int chirp = 0; chirp < 3; chirp++) {
+    // Sweep frequency up for natural sound (4500-5000Hz)
+    for (int freq = 4500; freq <= 5000; freq += 100) {
+      tone(buzzerPin, freq, 4);  // 4ms pulses
+      delay(1);                  // Creates frequency sweep
+    }
+    delay(30 + chirp*10);  // Increasing delay between chirps
+  }
+  noTone(buzzerPin);
+}
